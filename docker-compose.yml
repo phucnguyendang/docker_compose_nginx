@@ -3,7 +3,6 @@
 version: '3.8' 
 
 services:
-  # Dịch vụ 1: Nginx Load Balancer
   nginx-proxy:
     image: nginx:stable-alpine
     ports:
@@ -11,18 +10,13 @@ services:
       - "8080:80"
     volumes:
       # Gắn file nginx.conf từ máy thật vào trong container
-      # để Nginx sử dụng cấu hình load balancer của chúng ta
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - app1
       - app2
-
-  # Dịch vụ 2: Instance đầu tiên của ứng dụng
+  
   app1:
-    build: ./app # Chỉ định Docker Compose tự build image từ Dockerfile trong thư mục ./app
-    # Không cần 'ports' vì chỉ có Nginx được truy cập từ bên ngoài
+    build: ./app
 
-  # Dịch vụ 3: Instance thứ hai của ứng dụng
   app2:
-    build: ./app # Sử dụng chung một Dockerfile để tạo ra một instance khác
-    # Tương tự, không cần 'ports'
+    build: ./app 
